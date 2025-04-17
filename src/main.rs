@@ -45,7 +45,7 @@ fn main() {
     db.add_post(p2);
 
     let handlers = Handlers::new(db);
-    let json_content_middleware = JsonAftweMiddleware;
+    let json_content_middleware = JsonAfterMiddleware;
 
     let mut router = Router::new();
     router.get("/post_feed", handlers.post_feed, "post_feed");
