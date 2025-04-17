@@ -30,7 +30,7 @@ fn main() {
         "post okok 1",
         "body 1",
         "Jon none",
-        chrono::offset::utc::UTC::now(),
+        chrono::offset::Utc::now(),
         Uuid::new_v4(),
     );
     db.add_post(p);
@@ -39,7 +39,7 @@ fn main() {
         "post 2",
         "body 2",
         "Jon gone",
-        chrono::offset::utc::UTC::now(),
+        chrono::offset::Utc::now(),
         Uuid::new_v4(),
     );
     db.add_post(p2);

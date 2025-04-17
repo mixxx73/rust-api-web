@@ -12,22 +12,26 @@ use uuid::Uuid;
 use router::Router;
 use std::error::Error;
 
-macro_rules! try_hanlder {
+
+macro_rules! try_handler {
     ($e:expr) => {
         match $e {
             Ok(x) => x,
-            Err(e) => return Ok(Response::with((status::InternalServerError, e.description())))
+            Err(e) => {
+                return Ok(Response::with((
+                    status::InternalServerError,
+                    e.description(),
+                )))
+            }
         }
     };
-
     ($e:expr, $error:expr) => {
         match $e {
             Ok(x) => x,
-            Err(e) => return Ok(Response::with(($error, e.description())))
+            Err(e) => return Ok(Response::with(($error, e.description()))),
         }
-    }
+    };
 }
-
 macro_rules! lock {
     ($e:expr) => {
         $e.lock().unwrap()
@@ -95,15 +99,14 @@ impl PostPostHandler {
 impl Handler for PostPostHandler {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let mut payload = String::new();
-        try_hanlder!(req.body.read_to_string(&mut payload));
+        try_handler!(req.body.read_to_string(&mut payload));
 
-        let post = try_hanlder!(serde_json::to_string(&payload), status::BadRequest);
+        let post = try_handler!(serde_json::from_str(payload.as_str()), status::BadRequest);
 
         lock!(self.database).add_post(post);
         Ok(Response::with((status::Created, payload)))
     }
 }
-
 pub struct PostHandler {
     database: Arc<Mutex<Database>>,
 }

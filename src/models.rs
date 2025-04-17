@@ -1,15 +1,14 @@
-use chrono::datetime::DateTime;
-// use chrono::offset::utc::UTC;
+use chrono::DateTime;
 use chrono::Utc;
-use uuid::Uuid;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Post {
     title: String,
     body: String,
     author: String,
-    datetime: DateTime<UTC>,
+    datetime: DateTime<Utc>,
     uuid: Uuid,
 }
 
@@ -19,7 +18,7 @@ impl Post {
         title: &str,
         body: &str,
         author: &str,
-        datetime: DateTime<UTC>,
+        datetime: DateTime<Utc>,
         uuid: Uuid,
     ) -> Post {
         Post {
