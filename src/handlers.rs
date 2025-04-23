@@ -16,7 +16,7 @@ macro_rules! try_handler {
             Err(e) => {
                 return Ok(Response::with((
                     status::InternalServerError,
-                    e.description(),
+                    e.to_string(),
                 )))
             }
         }
@@ -24,7 +24,7 @@ macro_rules! try_handler {
     ($e:expr, $error:expr) => {
         match $e {
             Ok(x) => x,
-            Err(e) => return Ok(Response::with(($error, e.description()))),
+            Err(e) => return Ok(Response::with(($error, e.to_string()))),
         }
     };
 }
